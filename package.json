@@ -1,9 +1,11 @@
 {
   "name": "@prismaext/pagination",
-  "version": "0.0.1",
-  "main": "./lib/src/index.js",
-  "types": "./lib/src/index.d.ts",
-  "bin": "./bin/index.js",
+  "version": "0.0.2",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "bin": {
+    "pagination-generator": "./bin/index.js"
+  },
   "license": "MIT",
   "scripts": {
     "build": "tsc"

@@ -154,7 +154,7 @@ generatorHandler({
     onManifest(): GeneratorManifest {
         return {
             prettyName: "Prisma Pagination",
-            defaultOutput: "node_modules/prisma-pagination",
+            defaultOutput: "node_modules/@prismaext/pagination/lib",
             requiresGenerators: ["prisma-client-js"],
         };
     },
