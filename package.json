@@ -5,6 +5,9 @@
   "types": "./lib/src/index.d.ts",
   "bin": "./bin/index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cedrickring/prisma-pagination"

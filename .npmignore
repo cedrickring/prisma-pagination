@@ -1,0 +1,6 @@
+prisma
+.env
+src
+.github
+tsconfig.json
+yarn.lock
