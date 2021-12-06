@@ -43,7 +43,7 @@ export const paginate =
             }
 
             const delegate = client[delegateName];
-            // @ts-expect-error: the findMany implementations are not overlapping, so we can't just call it with an arbitrary argument
+            // @ts-ignore: the findMany implementations are not overlapping, so we can't just call it with an arbitrary argument
             const page: Page = await delegate.findMany({
               ...findManyArgs,
               ...cursorArgs,
