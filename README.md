@@ -4,7 +4,7 @@ Prisma Pagination
 
 ## About
 
-This [Prisma Generator](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#generator) adds polyfills for async-iterable-cursor-based pagination with a simple `.paginate()` method on each prisma delegate. This is a usual opt-in polyfill, so no original/generated prisma files will be touched.  
+This [Prisma Generator](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#generator) adds polyfills for async-iterable-cursor-based pagination with a simple `.paginate()` method on each prisma delegate. This is a usual opt-in polyfill, so no original/generated prisma files will be touched.
 
 Usage is as easy as:
 
@@ -12,11 +12,11 @@ Usage is as easy as:
 const prisma = new PrismaClient();
 
 async function printAllPosts() {
-    for await (const posts of prisma.post.paginate({ cursorField: 'id', pageSize: 50, include: { author: true } })) {
-        posts.forEach(post => {
-            console.log(post.id, post.author.email);
-        });
-    }
+  for await (const posts of prisma.post.paginate({ cursorField: 'id', pageSize: 50, include: { author: true } })) {
+    posts.forEach((post) => {
+      console.log(post.id, post.author.email);
+    });
+  }
 }
 ```
 
@@ -24,7 +24,8 @@ async function printAllPosts() {
 
 1. Install `@prismaext/pagination` with either `yarn` or `npm` (or some other package manager)
 
-    e.g. `npm install @prismaext/pagination` or `yarn add @prismaext/pagination`
+   e.g. `npm install @prismaext/pagination` or `yarn add @prismaext/pagination`
+
 2. Add a generator block to your `schema.prisma` like:
    ```prisma
    generator pagination {
@@ -61,8 +62,8 @@ export type ${Model}PaginateArgs = {
     **/
    orderBy?: Enumerable<${Model}OrderByWithRelationInput>
    /**
-   * Items to be fetched per ${Model} 
-   * 
+   * Items to be fetched per ${Model}
+   *
    */
    pageSize: number
 
@@ -70,12 +71,12 @@ export type ${Model}PaginateArgs = {
 
    /**
     * The cursor field to be used to paginate through
-    * 
+    *
     * defaults to 'id' or the first unique field present in the model
-    * 
+    *
     */
    cursorField?: 'id' // or some other unique field
 }
 ```
 
-Similar to `prisma-client-js`, this generator allows specifying the `output` path where the generated definitions will be placed in. 
+Similar to `prisma-client-js`, this generator allows specifying the `output` path where the generated definitions will be placed in.

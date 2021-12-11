@@ -1,5 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import { omit } from "./util";
+import { PrismaClient } from '@prisma/client';
+import { omit } from './util';
 
 interface PaginationIterable<T> {
   [Symbol.asyncIterator](): {
@@ -22,9 +22,7 @@ export const paginate =
     delegateName: DelegateName,
     defaultCursorField: CursorField
   ) =>
-  <Page extends unknown[]>(
-    args: PaginationArgs<CursorField>
-  ): PaginationIterable<Page> => {
+  <Page extends unknown[]>(args: PaginationArgs<CursorField>): PaginationIterable<Page> => {
     const cursorField = args.cursorField ?? defaultCursorField;
     const pageSize = args.pageSize;
     const findManyArgs = omit(args, ['cursorField', 'pageSize']);
