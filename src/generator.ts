@@ -28,8 +28,18 @@ ${contents.map((content) => indentString(content, 8)).join("\n\n")}
 
 function createPaginateArgsDeclaration(
     modelName: string,
-    cursorFields: string[]
+    cursorFields: string[],
+    hasRelations: boolean
 ) {
+    const includeDefinition = hasRelations
+        ? `
+/**
+ * Choose, which related nodes to fetch as well.
+ *
+ **/
+include?: ${modelName}Include | null`
+        : "";
+
     return `
 export type ${modelName}PaginateArgs = {
     /**
@@ -37,11 +47,7 @@ export type ${modelName}PaginateArgs = {
      *
      **/
     select?: ${modelName}Select | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     *
-     **/
-    include?: ${modelName}Include | null
+${indentString(includeDefinition, 4)}
     /**
      * Filter, which ${modelName}s to fetch.
      *
@@ -131,7 +137,8 @@ async function createTypescriptDefinitions(
         const cursorFields = model.fields
             .filter((field) => field.isUnique || field.isId)
             .map((field) => field.name);
-        return createPaginateArgsDeclaration(model.name, cursorFields);
+        const hasRelations = model.fields.some((field) => !!field.relationName);
+        return createPaginateArgsDeclaration(model.name, cursorFields, hasRelations);
     });
     const delegateExtensions = models.map((model) =>
         createDelegateExtension(model.name)
