@@ -19,7 +19,7 @@ import type { ${modelNames.join(", ")} } from '@prisma/client';
 function createPrismaModuleDefinition(contents: string[]) {
     return `
 declare module '@prisma/client' {
-    declare namespace Prisma {
+    namespace Prisma {
 ${contents.map((content) => indentString(content, 8)).join("\n\n")}
     }
 }
