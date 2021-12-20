@@ -8,9 +8,10 @@ interface PaginationIterable<T> {
   };
 }
 
-interface PaginationArgs<CursorField> {
+interface PaginationArgs<CursorField extends string> {
   cursorField?: CursorField;
   pageSize: number;
+  orderBy?: Record<CursorField, 'asc' | 'desc'>;
 }
 
 type OmitNonDelegates<T> = T extends `$${infer U}` ? never : T; // non-delegates start with a $
@@ -22,10 +23,11 @@ export const paginate =
     delegateName: DelegateName,
     defaultCursorField: CursorField
   ) =>
-  <Page extends unknown[]>(args: PaginationArgs<CursorField>): PaginationIterable<Page> => {
+  <Page extends Record<CursorField, unknown>[]>(args: PaginationArgs<CursorField>): PaginationIterable<Page> => {
     const cursorField = args.cursorField ?? defaultCursorField;
     const pageSize = args.pageSize;
-    const findManyArgs = omit(args, ['cursorField', 'pageSize']);
+    const orderBy = args.orderBy ?? {};
+    const findManyArgs = omit(args, ['cursorField', 'pageSize', 'orderBy']);
 
     return {
       [Symbol.asyncIterator]() {
@@ -40,19 +42,24 @@ export const paginate =
               };
             }
 
+            const orderByWithCursor = {
+              [cursorField]: 'asc',
+              ...orderBy,
+            };
             const delegate = client[delegateName];
             // @ts-ignore: the findMany implementations are not overlapping, so we can't just call it with an arbitrary argument
             const page: Page = await delegate.findMany({
               ...findManyArgs,
               ...cursorArgs,
               take: pageSize,
+              orderBy: orderByWithCursor,
             });
 
             if (page.length === 0) {
               return { done: true, value: null };
             }
 
-            this.lastCursor = (page[page.length - 1] as any)[cursorField];
+            this.lastCursor = page[page.length - 1][cursorField];
             return { done: false, value: page };
           },
         };
