@@ -9,6 +9,9 @@ This [Prisma Generator](https://www.prisma.io/docs/reference/api-reference/prism
 Usage is as easy as:
 
 ```ts
+import { PrismaClient } from '@prisma/client';
+import '@prismaext/pagination';
+
 const prisma = new PrismaClient();
 
 async function printAllPosts() {
